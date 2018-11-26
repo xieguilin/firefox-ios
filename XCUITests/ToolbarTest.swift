@@ -58,11 +58,7 @@ class ToolbarTests: BaseTestCase {
         XCTAssertTrue(app.buttons["Forward"].isEnabled)
 
         // Open new tab and then go back to previous tab to test navigation buttons.
-        if iPad() {
-            waitForExistence(app.buttons["TopTabsViewController.tabsButton"], timeout: 5)
-        } else {
-            waitForExistence(app.buttons["URLBarView.tabsButton"], timeout: 5)
-        }
+        waitForTabsButton()
         navigator.goto(TabTray)
         waitForExistence(app.collectionViews.cells[website1["label"]!])
         app.collectionViews.cells[website1["label"]!].tap()
@@ -93,6 +89,7 @@ class ToolbarTests: BaseTestCase {
     func testClearURLTextUsingBackspace() {
         navigator.openURL(website1["url"]!)
         waitUntilPageLoad()
+        waitForTabsButton()
         waitForExistence(app.webViews.links["Mozilla"], timeout: 10)
         waitForValueContains(app.textFields["url"], value: website1["value"]!)
 
@@ -114,7 +111,7 @@ class ToolbarTests: BaseTestCase {
         navigator.openURL(website1["url"]!, waitForLoading: true)
         // Adding the waiter right after navigating to the webpage in order to make the test more stable
         waitUntilPageLoad()
-        waitForExistence(app.buttons["TabLocationView.pageOptionsButton"], timeout: 5)
+        waitForExistence(app.buttons["TabLocationView.pageOptionsButton"], timeout: 10)
         let pageActionMenuButton = app.buttons["TabLocationView.pageOptionsButton"]
         let statusbarElement = app.statusBars.children(matching: .other).element.children(matching: .other).element(boundBy: 0)
         XCTAssertTrue(statusbarElement.isHittable)
