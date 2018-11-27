@@ -60,7 +60,6 @@ let allSettingsScreens = [
     SearchSettings,
     AddCustomSearchSettings,
     NewTabSettings,
-    HomePageSettings,
     OpenWithSettings,
     DisplaySettings,
     TranslationSettings,
@@ -160,6 +159,7 @@ class Action {
     static let SelectNewTabAsBlankPage = "SelectNewTabAsBlankPage"
     static let SelectNewTabAsBookmarksPage = "SelectNewTabAsBookmarksPage"
     static let SelectNewTabAsHistoryPage = "SelectNewTabAsHistoryPage"
+    static let SelectNewTabAsCustomURL = "SelectNewTabAsCustomURL"
 
     static let AcceptClearPrivateData = "AcceptClearPrivateData"
     static let AcceptClearAllWebsiteData = "AcceptClearAllWebsiteData"
@@ -506,7 +506,6 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
         screenState.tap(table.cells["SignInToSync"], to: FxASigninScreen, if: "fxaUsername == nil")
         screenState.tap(table.cells["Search"], to: SearchSettings)
         screenState.tap(table.cells["NewTab"], to: NewTabSettings)
-        screenState.tap(table.cells["Homepage"], to: HomePageSettings)
         screenState.tap(table.cells["OpenWith.Setting"], to: OpenWithSettings)
         screenState.tap(table.cells["DisplayThemeOption"], to: DisplaySettings)
         screenState.tap(table.cells["TranslationOption"], to: TranslationSettings)
@@ -605,18 +604,15 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
             table.cells["History"].tap()
         }
 
+        screenState.gesture(forAction: Action.SelectNewTabAsCustomURL) { UserState in
+            table.cells["HomePageSetting"].tap()
+        }
+
         screenState.gesture(forAction: Action.TogglePocketInNewTab) { userState in
             userState.pocketInNewTab = !userState.pocketInNewTab
             table.switches["ASPocketStoriesVisible"].tap()
         }
-        screenState.gesture(forAction: Action.ToggleBookmarksInNewTab) { userState in
-            userState.bookmarksInNewTab = !userState.bookmarksInNewTab
-            table.switches["ASBookmarkHighlightsVisible"].tap()
-        }
-        screenState.gesture(forAction: Action.ToggleHistoryInNewTab) { userState in
-            userState.historyInNewTab = !userState.historyInNewTab
-            table.switches["ASRecentHighlightsVisible"].tap()
-        }
+
         screenState.backAction = navigationControllerBackAction
     }
 
