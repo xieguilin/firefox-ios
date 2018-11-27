@@ -14,7 +14,7 @@ class HomePageSettingsTest: BaseTestCase {
 
         // Go via the menu, becuase if we go via the TabTray, then we
         // won't have a current tab.
-        navigator.goto(HomePageSettings)
+        navigator.goto(HomeSettings)
         app.tables.staticTexts["Use Current Page"].tap()
 
         // check the value of the current homepage

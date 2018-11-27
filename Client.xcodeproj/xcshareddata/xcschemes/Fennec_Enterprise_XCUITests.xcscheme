@@ -245,9 +245,6 @@
                   Identifier = "HomePageSettingsTest">
                </Test>
                <Test
-                  Identifier = "HomePageSettingsUITests">
-               </Test>
-               <Test
                   Identifier = "HomePageUITest">
                </Test>
                <Test

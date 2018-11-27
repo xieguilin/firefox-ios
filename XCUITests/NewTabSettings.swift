@@ -14,29 +14,7 @@ class NewTabSettingsTest: BaseTestCase {
         XCTAssertTrue(app.tables.cells["Bookmarks"].exists)
         XCTAssertTrue(app.tables.cells["History"].exists)
         XCTAssertTrue(app.tables.cells["HomePageSetting"].exists)
-        XCTAssertTrue(app.tables.switches["ASPocketStoriesVisible"].isEnabled)
-    }
-
-    // Hightlights is not shown, and neither the bookmark, test disabled in all schemes
-    func testToggleOffOnAdditionalContentBookmarks() {
-        // Bookmark one site and check it appears in a new tab
-        navigator.performAction(Action.BookmarkThreeDots)
-        navigator.performAction(Action.OpenNewTabFromTabTray)
-        waitForNoExistence(app.staticTexts["Highlights"])
-
-        // Disable toggle and check that it does not appear in a new tab
-        navigator.goto(NewTabSettings)
-        navigator.toggleOff(userState.bookmarksInNewTab, withAction: Action.ToggleBookmarksInNewTab)
-        navigator.performAction(Action.OpenNewTabFromTabTray)
-
-        //This appears under top sites
-        waitForNoExistence(app.staticTexts["Highlights"])
-
-        // Enable toggle again and check it is shown
-        navigator.goto(NewTabSettings)
-        navigator.toggleOn(userState.bookmarksInNewTab, withAction: Action.ToggleBookmarksInNewTab)
-        navigator.performAction(Action.OpenNewTabFromTabTray)
-        waitForNoExistence(app.staticTexts["Highlights"])
+        //XCTAssertTrue(app.tables.switches["ASPocketStoriesVisible"].isEnabled)
     }
 
     // Smoketest

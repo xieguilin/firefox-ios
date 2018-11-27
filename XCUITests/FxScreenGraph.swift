@@ -24,7 +24,7 @@ let SettingsScreen = "SettingsScreen"
 let SyncSettings = "SyncSettings"
 let FxASigninScreen = "FxASigninScreen"
 let FxCreateAccount = "FxCreateAccount"
-let HomePageSettings = "HomePageSettings"
+let HomeSettings = "HomeSettings"
 let PasscodeSettings = "PasscodeSettings"
 let PasscodeIntervalSettings = "PasscodeIntervalSettings"
 let SearchSettings = "SearchSettings"
@@ -159,6 +159,13 @@ class Action {
     static let SelectNewTabAsBookmarksPage = "SelectNewTabAsBookmarksPage"
     static let SelectNewTabAsHistoryPage = "SelectNewTabAsHistoryPage"
     static let SelectNewTabAsCustomURL = "SelectNewTabAsCustomURL"
+
+    static let SelectHomeAsBlankPage = "SelectHomeAsBlankPage"
+    static let SelectHomeAsBookmarksPage = "SelectHomeAsBookmarksPage"
+    static let SelectHomeAsHistoryPage = "SelectHomeAsHistoryPage"
+    static let SelectHomeAsCustomURL = "SelectHomeAsCustomURL"
+
+    static let GoToHomePage = "GoToHomePage"
 
     static let AcceptClearPrivateData = "AcceptClearPrivateData"
     static let AcceptClearAllWebsiteData = "AcceptClearAllWebsiteData"
@@ -505,6 +512,7 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
         screenState.tap(table.cells["SignInToSync"], to: FxASigninScreen, if: "fxaUsername == nil")
         screenState.tap(table.cells["Search"], to: SearchSettings)
         screenState.tap(table.cells["NewTab"], to: NewTabSettings)
+        screenState.tap(table.cells["Home"], to: HomeSettings)
         screenState.tap(table.cells["OpenWith.Setting"], to: OpenWithSettings)
         screenState.tap(table.cells["DisplayThemeOption"], to: DisplaySettings)
         screenState.tap(table.cells["TranslationOption"], to: TranslationSettings)
@@ -607,15 +615,30 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
             table.cells["HomePageSetting"].tap()
         }
 
-        screenState.gesture(forAction: Action.TogglePocketInNewTab) { userState in
-            userState.pocketInNewTab = !userState.pocketInNewTab
-            table.switches["ASPocketStoriesVisible"].tap()
-        }
-
         screenState.backAction = navigationControllerBackAction
     }
 
-    map.addScreenState(HomePageSettings) { screenState in
+    map.addScreenState(HomeSettings) { screenState in
+
+        screenState.gesture(forAction: Action.SelectHomeAsBlankPage) { UserState in
+            app.cells["Blank Page"].tap()
+        }
+        screenState.gesture(forAction: Action.SelectHomeAsBookmarksPage) { UserState in
+            app.cells["Bookmarks"].tap()
+        }
+        screenState.gesture(forAction: Action.SelectHomeAsHistoryPage) { UserState in
+            app.cells["History"].tap()
+        }
+
+        screenState.gesture(forAction: Action.SelectHomeAsCustomURL) { UserState in
+            app.cells["HomePageSetting"].tap()
+        }
+
+        screenState.gesture(forAction: Action.TogglePocketInNewTab) { userState in
+            userState.pocketInNewTab = !userState.pocketInNewTab
+            app.switches["ASPocketStoriesVisible"].tap()
+        }
+
         screenState.backAction = navigationControllerBackAction
     }
 
@@ -934,6 +957,9 @@ func createScreenGraph(for test: XCTestCase, with app: XCUIApplication) -> MMScr
             } else {
                 userState.trackingProtectionSettingOnNormalMode = !userState.trackingProtectionSettingOnNormalMode
             }
+        }
+
+        screenState.tap(app.tables.cells["menu-Home"], forAction: Action.GoToHomePage) { userState in
         }
 
         screenState.dismissOnUse = true
