@@ -9,13 +9,12 @@ class NewTabSettingsTest: BaseTestCase {
     func testCheckNewTabSettingsByDefault() {
         navigator.goto(NewTabSettings)
         waitForExistence(app.navigationBars["New Tab"])
-        XCTAssertTrue(app.tables.cells["Top Sites"].exists)
+        XCTAssertTrue(app.tables.cells["Firefox Home"].exists)
         XCTAssertTrue(app.tables.cells["Blank Page"].exists)
         XCTAssertTrue(app.tables.cells["Bookmarks"].exists)
         XCTAssertTrue(app.tables.cells["History"].exists)
+        XCTAssertTrue(app.tables.cells["HomePageSetting"].exists)
         XCTAssertTrue(app.tables.switches["ASPocketStoriesVisible"].isEnabled)
-        XCTAssertTrue(app.tables.switches["ASBookmarkHighlightsVisible"].isEnabled)
-        XCTAssertTrue(app.tables.switches["ASRecentHighlightsVisible"].isEnabled)
     }
 
     // Hightlights is not shown, and neither the bookmark, waiting for expected behaviour confirmation Bug 1504007
@@ -86,5 +85,23 @@ class NewTabSettingsTest: BaseTestCase {
         navigator.nowAt(BrowserTab)
         navigator.performAction(Action.OpenNewTabFromTabTray)
         waitForExistence(app.tables["History List"].cells.staticTexts["Example Domain"])
+    }
+
+    func testChangeNewTabSettingsShowCustomURL() {
+        navigator.goto(NewTabSettings)
+        waitForExistence(app.navigationBars["New Tab"])
+        // Check the placeholder value
+        let placeholderValue = app.textFields["HomePageSettingTextField"].value as! String
+        XCTAssertEqual(placeholderValue, "Custom URL")
+        navigator.performAction(Action.SelectNewTabAsCustomURL)
+        // Check the value typed
+        app.textFields["HomePageSettingTextField"].typeText("mozilla.org")
+        let valueTyped = app.textFields["HomePageSettingTextField"].value as! String
+        waitForValueContains(app.textFields["HomePageSettingTextField"], value: "mozilla")
+        XCTAssertEqual(valueTyped, "mozilla.org")
+        // Open new page and check that the custom url is used
+        navigator.performAction(Action.OpenNewTabFromTabTray)
+        waitForExistence(app.textFields["url"])
+        waitForValueContains(app.textFields["url"], value: "mozilla")
     }
 }
