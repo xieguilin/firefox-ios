@@ -17,7 +17,7 @@ class NewTabSettingsTest: BaseTestCase {
         XCTAssertTrue(app.tables.switches["ASPocketStoriesVisible"].isEnabled)
     }
 
-    // Hightlights is not shown, and neither the bookmark, waiting for expected behaviour confirmation Bug 1504007
+    // Hightlights is not shown, and neither the bookmark, test disabled in all schemes
     func testToggleOffOnAdditionalContentBookmarks() {
         // Bookmark one site and check it appears in a new tab
         navigator.performAction(Action.BookmarkThreeDots)

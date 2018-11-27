@@ -153,7 +153,6 @@ class Action {
     static let DisablePasscodeTypeIncorrectPasscode = "DisablePasscodeTypeIncorrectPasscode"
 
     static let TogglePocketInNewTab = "TogglePocketInNewTab"
-    static let ToggleBookmarksInNewTab = "ToggleBookmarksInNewTab"
     static let ToggleHistoryInNewTab = "ToggleHistoryInNewTab"
 
     static let SelectNewTabAsBlankPage = "SelectNewTabAsBlankPage"
